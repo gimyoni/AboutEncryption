@@ -1,0 +1,210 @@
+.start {
+    position: absolute;
+    top:50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    padding:20px;
+    /*border: 5px solid black;*/
+}
+h1 {
+    text-align: center;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 78px;
+  
+}
+.start input {
+    width: 540px;
+    height: 80px;
+    display : block;
+    margin-bottom: 20px;
+    padding-left:20px;
+    padding-right:20px;
+
+    border: 10px solid #FFCE01;
+    color: black;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 48px;
+}
+.start input::placeholder {
+    color: gray;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 48px;
+}
+.start button {
+    width: 100%;
+    height: 80px;
+    display : block;
+    padding:0;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 48px;
+    background: #FFCE01;
+    border: 10px solid #FFCE01;
+}
+span {
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 30px;
+}
+.result {
+    position: absolute;
+    top:45%;
+    left: 50%;
+    width:60%;
+    transform: translate(-50%, -50%);
+    
+    display:none;
+}
+.result .result_page{
+    width:100%;
+    height:510px;
+    margin-bottom: 20px;
+    /* border: 2px solid red; */
+}
+
+.result .result_page .result_table {
+    width:50%;
+    float:left;
+}
+
+div#table {
+    border-collapse: collapse;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 45px;
+}
+
+th {
+    width: 90px;
+    height: 90px;
+    text-align: center;
+    vertical-align:middle;
+    border: 10px solid #FFCE01;
+}
+
+.result .result_list {
+    width:50%;
+    float:left;
+    margin : 0 auto;
+}
+.result .result_list input {
+    width: 80%;
+    height: 50px;
+    display : block;
+    margin-bottom: 10px;
+    padding-left:20px;
+    padding-right:20px;
+    margin : 0 auto;
+
+    border: 10px solid #FFCE01;
+    color: black;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 48px;
+}
+.result button{
+    width: 100%;
+    height: 80px;
+    display : block;
+    padding:0;
+    margin-top: 20px;
+    font-family: 'Do Hyeon', sans-serif;
+    font-size: 48px;
+    background: #FFCE01;
+    border: 10px solid #FFCE01;
+    float:left;
+}
+
+@media screen and (max-width:767px) {
+    .start{
+        position: absolute;
+        top:50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        padding:20px;
+    }
+    .result{
+        position: absolute;
+        top:40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        padding:20px;
+    }
+    .result span {
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 24px;
+    }
+    
+    h1 {
+        text-align: center;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 45px;
+      
+    }
+    .start input{
+        width: 320px;
+        height: 50px;
+        display : block;
+        margin-bottom: 10px;
+        padding-left:10px;
+        padding-right:10px;
+    
+        border: 5px solid #FFCE01;
+        color: black;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 24px;
+    }
+    .start input{
+        width: 320px;
+        height: 50px;
+        display : block;
+        margin-bottom: 10px;
+        padding-left:10px;
+        padding-right:10px;
+    
+        border: 5px solid #FFCE01;
+        color: black;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 24px;
+    }
+    .start input::placeholder {
+        color: gray;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 24px;
+    }
+    .start button {
+        width: 100%;
+        height: 50px;
+        display : block;
+        padding:0;
+        font-family: 'Do Hyeon', sans-serif;
+        font-size: 24px;
+        background: #FFCE01;
+        border: 5px solid #FFCE01;
+    }
+    .result .result_page{
+        width:100%;
+        margin-bottom: 20px;
+    }
+    .result .result_page .result_table {
+        margin-top: 20px;
+        width:100%;
+    }
+    th {
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        vertical-align:middle;
+        border: 10px solid #FFCE01;
+      }
+    .result .result_list {
+        width:100%;
+    }
+    #wc-bookings-booking-form {
+        display: flex;
+        flex-direction: column; /* 세로로 정렬하겠다는 의미 */
+     }
+     /* 그 안의 필드들에 order 순서만 지정하면 끝 */
+     #wc-bookings-booking-form .result_list { order: 1; }
+     #wc-bookings-booking-form .result_table { order: 2; }
+     #wc-bookings-booking-form .again_btn { order: 3; }
+}
