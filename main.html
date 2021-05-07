@@ -2,80 +2,64 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>PROTECTED</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Do+Hyeon&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script>
-    $(document).ready(function() {
-        //첫번째 input박스에 대한 액션
-        $('#key').keypress(function (e) {
-            if (e.which == 13) {
-                if($('#key').val()=='') {
-                    alert('inputbox아이디에 내용을 입력하세요');
-                }
-                else {
-                    $('#key').focus();
-                }
-            }
-        });
-        $('#str').keypress(function (e) {
-            if (e.which == 13) {
-                if($('#stsr').val()=='') {
-                    alert('inputbox아이디에 내용을 입력하세요');
-                }
-                else {
-                    $('#str').focus();
-                }
-            }
-        });
-
-    });
-
-    </script>
-
+ 
 </head>
 <body>
-    
     <div class="start">
         <h1>⚠️PROTECTED⚠️️</h1>
-        <form id = "frm">
-        <span>암호화키(최소 2자에서 10자)</span>
-        <input type="text"  id="key" minlength="2" maxlength='10' placeholder="암호화키를 입력해주세요" oninput="handleOnInput(this)">
-        <span>평문(최소 2자에서 10자)</span>
-        <input type="text" id="str" minlength="2" maxlength='10' placeholder="평문을 입력해주세요" oninput="handleOnInput(this)">
-
-        <button id ="submit" onClick="init()">암호화</button>
-        </form>
+        <span>암호화키(최소 2자에서 10자, 영문만)</span>
+        <input type="text"  id="key" minlength="2" maxlength='10' placeholder="암호화키를 입력해주세요" >
+        <span>평문(최소 2자에서 20자, 영문만)</span>
+        <input type="text" id="str" minlength="2" maxlength='20' placeholder="평문을 입력해주세요">
+        <button id ="submit" onclick="init()">암호화</button>
     </div>
 
     <div class="result">
         <h1>⚠️PROTECTED⚠️️</h1>
-
         <div class = "result_page" id = "wc-bookings-booking-form">
+            
             <div class = "result_table">
                 <div id="table"></div> 
             </div>
-            <div class = "result_list">
+
+            <div class = "encryption_list">
                 <span>암호화에 쓴 키</span>
                 <input type="text" id="key1" readonly>
 
-                <span>암호화에 쓴 문자열</span>
-                <input type="text" id="str1" readonly>
+                <span>매핑값</span>
+                <div id="mapTable"></div>
+                <div id="encTable"></div> 
 
-                <span>암호문</span>
-                <input type="text" id="encryption" readonly>
+                <div class = "encryption_str">
+                    <span>암호문</span>
+                    <input type="text" id="encryption" readonly>
+                </div>
 
+            </div>
+
+            <div class = "decryption_list">
                 <span>복호문</span>
                 <input type="text" id="decryption" readonly>
             </div>
-            <button class = "again_btn" onclick="again()">다시하기</button>
+            
+            <div class="btns">
+                <button class = "again_btn" onclick="again()">다시하기</button>
+                <button class = "decryption_btn" onclick="showDecryption()">복호화</button>
+            </div> 
+
         </div>         
     </div>
     <script src="./js/main.js"></script>
 
 </body>
+<script>
+
+</script>
 </html>

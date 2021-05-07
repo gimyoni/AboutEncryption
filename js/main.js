@@ -1,34 +1,77 @@
-function handleOnInput(e){ 
-    e.value = e.value.replace(/[^A-Za-z]/ig, '')
-} // 영어만 입력받기
+var key = document.getElementById("key"); 
+var str = document.getElementById("str"); 
+var arr = document.getElementById("arr1"); 
+var dec = document.getElementById("decryption");
+var enc = document.getElementById("encryption"); 
 
-	
+var alphabetBoard = Array(Array(5), Array(5), Array(5), Array(5), Array(5)); 
+var keyForSet = ""; 
+var zCheck = ""; 
+var oddFlag = false; 
+var enc_result = ""; 
 
-var key = document.getElementById("key"); // 암호화에 쓰일 키
-var str = document.getElementById("str"); // 암호화할 문자열
-var arr = document.getElementById("arr1"); // 만들어진 알파벳 배열 출력
-var enc = document.getElementById("encryption"); // 암호문 출력
-var dec = document.getElementById("decryption"); // 복호문 출력
-var alphabetBoard = Array(Array(5), Array(5), Array(5), Array(5), Array(5)); // 2차원 배열 선언
-var keyForSet = ""; // 중복 없앤 key 값
-var blankCheck = ""; // 빈 칸 체크하는 변수 (안 씀)
-var zCheck = ""; // 암호문에 있는 z값의 위치 확인하는 변수
-var oddFlag = false; // 암호문에서 홀수 판별
-var enc_result = ""; // 암호화 한 결과
-
-// 모든 함수 실행은 여기서
-function init() {
-    dataPreprocessing();
-    setBoard();
-    setStr();
-    // setArr();
-    strEncryption(key.value, str.value);
-    strDecryption(key.value, enc_result, zCheck);
-    removeElements();
+function checkSpecial(str) { 
+    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi; 
+    if(special_pattern.test(str) == true) { 
+        return true; 
+    } else { 
+        return false; 
+    } 
 }
 
+function checkKor(str) {
+    const regExp = /^[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*$/; 
+    if(regExp.test(str)){ 
+          return true; 
+    }else{ 
+        return false; 
+    } 
+}
+
+function init() {
+    document.getElementById("key1").value = key.value;
+
+    if(key.value === null || key.value === "" || str.value === null || str.value === "" ){
+        alert("입력칸이 비었습니다.");
+    }    
+    else if(key.value.length<2||str.value.length<2){
+        alert("최소 두글자 이상을 입력해주세요.");
+    }
+    else if(key.value.length>10||str.value.length>20){
+        alert("최대 글자 수가 넘었습니다.");
+    }
+    else if(checkSpecial(key.value)===true||checkKor(key.value)===true||checkKor(str.value)===true){
+        alert("특수 문자나 한글은 암호화할 수 없습니다.");
+    }else{
+        dataPreprocessing();
+        setBoard();
+        setStr();
+        strEncryption(key.value, str.value);
+        strDecryption(key.value, enc_result, zCheck);
+        removeElements();
+    }
+}
+
+function dataPreprocessing() {
+    document.getElementById("key1").value = key.value;
+
+    key.value = (key.value).toLowerCase();
+    str.value = (str.value).toLowerCase();
+    var RegExpHG = /[가-힣]/;
+    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
+    
+    if(regExp.test(str.value)){
+        var t = (str.value).replace(regExp, "");
+        t = (str.value).replace(RegExpHG,"");
+        str.value = t;
+    }
+    if(regExp.test(key.value)){
+        var t = (key.value).replace(regExp, "");
+        t = (key.value).replace(RegExpHG,"");
+        key.value = t;
+    }
+}
 function makeDiv(paramKey){
-    // 원래 있던 . 으로 이루어진 테이블 삭제하기
     const table = document.getElementById("table"); 
     while (table.hasChildNodes()) { 
         table.removeChild(table.firstChild); 
@@ -45,65 +88,83 @@ function makeDiv(paramKey){
       }
       table.appendChild(tr);
     }
-  }
-// 데이터 전처리
-function dataPreprocessing() {
-    document.getElementById("key1").value = key.value;
-    document.getElementById("str1").value = str.value;
-
-    key.value = (key.value).toLowerCase();
-    str.value = (str.value).toLowerCase();
-    var RegExpHG = /[가-힣]/;
-    var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
-    
-    if(regExp.test(str.value)){
-        var t = (str.value).replace(regExp, "");
-        t = (str.value).replace(RegExpHG,"");
-        str.value = t;
-    }
-    
-
-    // console.log(str.value); //특수문자, 한글
-
-    if(regExp.test(key.value)){
-        var t = (key.value).replace(regExp, "");
-        t = (key.value).replace(RegExpHG,"");
-        key.value = t;
-    }
-    // console.log(key.value); //특수문자
 }
 
+
+function makeEncArr(enc){
+    const encTable = document.getElementById("encTable"); 
+    let tr = document.createElement("tr");
+
+    let new_enc = "";
+    for (let i = 0; i < enc.length; i++) {
+        if (i!==0 && i % 2 === 0) {
+            new_enc += " ";
+        }
+        new_enc += enc[i];
+    }  
+    console.log(new_enc);
+    let arrKey = new_enc.split(' ');
+    console.log("arrKey : " + arrKey);
+
+    for(let i = 0; i<arrKey.length; i++){
+        let th = document.createElement("th");
+        let text = document.createTextNode(arrKey[i]);
+        th.appendChild(text);
+        tr.appendChild(th);
+    }
+    encTable.appendChild(tr);
+
+}
+
+function makeMapArr(str){
+    
+    const mapTable = document.getElementById("mapTable");
+    let tr = document.createElement("tr");
+    
+    let new_str = "";
+    for (let i = 0; i < str.length; i++) {
+        if (i!==0 && i % 2 === 0) {
+            new_str += " ";
+        }
+        new_str += str[i];
+    }  
+    console.log(new_str);
+    let arrKey = new_str.split(' ');
+    console.log("arrKey : " + arrKey);
+
+    for(let i = 0; i<arrKey.length; i++){
+        let th = document.createElement("th");
+        let text = document.createTextNode(arrKey[i]);
+        th.appendChild(text);
+        tr.appendChild(th);
+    }
+    mapTable.appendChild(tr);
+
+
+}
 function removeElements() {
     $('div').remove('.start');
     $('.result').css("display", "block");
 }
 
+function showDecryption(){
+    $('div').remove('.encryption_str');
+    $('.decryption_list').css("display", "block");
+}
+
 function again() {
     location.reload();
 }
-
-function setArr(){
-    for(let i=0; i < alphabetBoard.length; i++){
-        
-        for(let j=0; j < alphabetBoard[i].length; j++){
-            arr.innerHTML += alphabetBoard[i][j]+"  ";
-        }
-        arr.innerHTML += "<br>";
-    }
-}
-
-// alphabetBoard 배열에 중복없이 넣기
 function setBoard() {
     key.value = (key.value).replace(/ /g, "");
     str.value = (str.value).replace(/ /g, "");
     key.value = (key.value).toLowerCase();
 
-    var duplicationFlag = false; // 중복 검열
+    var duplicationFlag = false; 
     var keyLengthCount = 0;
 
     key.value += "abcdefghijklmnopqrstuvwxyz";
 
-    // 중복 처리 (key.value) 사용해야함
     for (let i = 0; i < (key.value).length; i++) {
 
         for (let j = 0; j < keyForSet.length; j++) {
@@ -118,7 +179,6 @@ function setBoard() {
     }
     key.value = keyForSet;
 
-    //배열에 대입
     for (let i = 0; i < alphabetBoard.length; i++) {
         for (let j = 0; j < alphabetBoard[i].length; j++) {
             alphabetBoard[i][j] = keyForSet.charAt(keyLengthCount++);
@@ -142,21 +202,19 @@ function setStr() {
 }
 
 function strEncryption(key, str) {
-    var playFair = ""; // 바꾸기 전 쌍자암호를 저장할 곳
-    var encPlayFair = ""; // 바꾼 후 쌍자암호를 저장할 곳
-    var x1 = 0, x2 = 0, y1 = 0, y2 = 0; // 두 글자의 각각의 행, 열 값
+    var playFair = ""; 
+    var encPlayFair = ""; 
+    var x1 = 0, x2 = 0, y1 = 0, y2 = 0; 
     var encStr = "";
 
-    for (let i = 0; i < str.length; i+= 2) // arraylist 세팅
+    for (let i = 0; i < str.length; i+= 2) 
     {
         var tmpArr = new Array(2);                                                                                                                                                                
         tmpArr[0] = str.charAt(i);
-        // console.log("1 zCheck: ",zCheck);
         for (let j = 0; j < str.length; j++) {                             
-            if (str.charAt(i) === str.charAt(i + 1)) //글이 반복되면 x추가
+            if (str.charAt(i) === str.charAt(i + 1)) 
             {
                 if(zCheck.charAt(i,1) === '1' ^ zCheck.charAt(i+1,1) === '1'){
-                    // console.log("둘이 xor");
                     tmpArr = str.charAt(i+1,1);
                 }
                 else{
@@ -170,18 +228,16 @@ function strEncryption(key, str) {
         }
         playFair += tmpArr;
         playFair = playFair.replace(/,/gi, "");
-        // console.log("1playFair : ",playFair);
     }
 
     if (playFair.length % 2 === 1) {
         playFair += 'x';
         oddFlag = true;
     }
-    // console.log(playFair);
+    makeMapArr(playFair);
 
     for (let i = 0; i < playFair.length; i+= 2) {
         var tmpArr = new Array(2);
-        // console.log("22 zCheck: ",zCheck);
         if(playFair[i] === playFair[i+1]){
             if(zCheck.charAt(i, 1) === '1'){
                 tmpArr[0] = 'q';
@@ -197,9 +253,8 @@ function strEncryption(key, str) {
             continue;
         }
 
-        // console.log("2playFair : ",playFair);
 
-        for (let j = 0; j < alphabetBoard.length; j++) //쌍자암호의 각각 위치체크
+        for (let j = 0; j < alphabetBoard.length; j++) 
         {
             for (let k = 0; k < alphabetBoard[j].length; k++) {
                 if (alphabetBoard[j][k] === playFair[i]) {
@@ -213,17 +268,17 @@ function strEncryption(key, str) {
             }
         }
 
-        if (x1 == x2) //행이 같은경우
+        if (x1 == x2) 
         {
             tmpArr[0] = alphabetBoard[x1][(y1 + 1) % 5];
             tmpArr[1] = alphabetBoard[x2][(y2 + 1) % 5];
         }
-        else if (y1 == y2) //열이 같은 경우
+        else if (y1 == y2)
         {
             tmpArr[0] = alphabetBoard[(x1 + 1) % 5][y1];
             tmpArr[1] = alphabetBoard[(x2 + 1) % 5][y2];
         }
-        else //행, 열 모두 다른경우
+        else 
         {
             tmpArr[0] = alphabetBoard[x2][y1];
             tmpArr[1] = alphabetBoard[x1][y2];
@@ -235,22 +290,18 @@ function strEncryption(key, str) {
         encPlayFair += " ";
     }
 
-    // if(encPlayFair.lastIndexOf(",") !== -1)
-    //     encPlayFair=encPlayFair.substring(0, encPlayFair.length-1);
-
-    // for (let i = 0; i < encPlayFair.length; i++) {
-    //     encStr += encPlayFair[i][0] + "" + encPlayFair[i][1] + " ";
-    // }
+    enc_result = encPlayFair.replace(/ /gi, ""); 
     enc.value = encPlayFair;
-    enc_result = encPlayFair.replace(/ /gi, "");
-    // console.log(enc_result)
-
+    
+    makeEncArr(enc_result);
 }
 
-function strDecryption(key, str, zChk) {
-    var playFair = new Array(); // 바꾸기 전 쌍자암호를 저장할 곳
-    var decPlayFair = new Array(); // 바꾼 후 쌍자암호를 저장할 곳
-    var x1 = 0, x2 = 0, y1 = 0, y2 = 0; // 두 글자의 각각의 행, 열 값
+
+
+function strDecryption(key, str, zChk) { // 복호화
+    var playFair = new Array(); 
+    var decPlayFair = new Array(); 
+    var x1 = 0, x2 = 0, y1 = 0, y2 = 0; 
     var decStr = "";
 
     for (let i = 0; i < str.length; i += 2) {
@@ -261,7 +312,7 @@ function strDecryption(key, str, zChk) {
     }
     for (let i = 0; i < playFair.length; i++) {
         var tmpArr = new Array();
-        for (let j = 0; j < alphabetBoard.length; j++) //쌍자암호의 각각 위치체크
+        for (let j = 0; j < alphabetBoard.length; j++) 
         {
             for (let k = 0; k < alphabetBoard[j].length; k++) {
                 if (alphabetBoard[j][k] === playFair[i][0]) {
@@ -278,19 +329,18 @@ function strDecryption(key, str, zChk) {
         }
 
         console.log(alphabetBoard);
-        // console.log("if 문 시작하기 전에 확인 x1,x2,y1,y2 : ", x1, x2, y1, y2);
-        if (x1 === x2) //행이 같은경우
+        if (x1 === x2) 
         {
             tmpArr[0] = alphabetBoard[x1][(y1 + 4) % 5];
             tmpArr[1] = alphabetBoard[x2][(y2 + 4) % 5];
             console.log(tmpArr);
         }
-        else if (y1 === y2) //열이 같은 경우
+        else if (y1 === y2) 
         {
             tmpArr[0] = alphabetBoard[(x1 + 4) % 5][y1];
             tmpArr[1] = alphabetBoard[(x2 + 4) % 5][y2];
         }
-        else //행, 열 모두 다른경우
+        else 
         {
             tmpArr[0] = alphabetBoard[x2][y1];
             tmpArr[1] = alphabetBoard[x1][y2];
@@ -299,7 +349,7 @@ function strDecryption(key, str, zChk) {
         decPlayFair.push(tmpArr);
     }
 
-    for (let i = 0; i < decPlayFair.length; i++) //중복 문자열 돌려놓음
+    for (let i = 0; i < decPlayFair.length; i++) 
     {
         if (i != decPlayFair.length - 1 && decPlayFair[i][1] == 'x' && decPlayFair[i][0] == decPlayFair[i + 1][0]) {
             decStr += decPlayFair[i][0];
@@ -309,7 +359,7 @@ function strDecryption(key, str, zChk) {
         }
     }
 
-    for (let i = 0; i < zChk.length; i++)//z위치 찾아서 q로 돌려놓음
+    for (let i = 0; i < zChk.length; i++)
     {
         if (zChk.charAt(i) == '1') {
             decStr = decStr.substring(0, i) + 'z' + decStr.substring(i + 1, decStr.length);
@@ -318,5 +368,7 @@ function strDecryption(key, str, zChk) {
     if(decStr.slice(decStr.length-1,decStr.length) === 'x'){
         decStr = decStr.slice(0,length-1);
     }
+
+    console.log(decStr);
     dec.value = decStr;
 }
